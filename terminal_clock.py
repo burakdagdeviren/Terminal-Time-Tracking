@@ -25,8 +25,7 @@ try:
 
         # find remaining duration
         time_left = t2 - t1
-        time_left_string = str(time_left)
-        time_left_string = time_left_string[:-3]
+        time_left_string = str(time_left).split('.')[0]
 
         # Progress Bar Conter if time is above 09.00
         if t1 >= t3 and t1 <= t2:
