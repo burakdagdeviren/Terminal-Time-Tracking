@@ -67,7 +67,7 @@ try:
             print(ascii_none)
             print("========================")
 
-        # Wait 1 minute
+        # Wait 30 seconds
         sleep(30)
 
 except KeyboardInterrupt:
