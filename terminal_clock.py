@@ -15,7 +15,7 @@ prog_counter = 0
 
 try:
     while True:
-        os.system('cls')
+        os.system('cls' if os.name == 'nt' else 'clear')
         now = datetime.now()
         start = datetime.now().time()
 
