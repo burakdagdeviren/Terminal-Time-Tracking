@@ -11,6 +11,7 @@ out_of_scope = "N/A"
 ascii_none = pyfiglet.figlet_format(out_of_scope)
 prog_bar = tqdm(total=1080, position=0, leave=False)
 prog_counter = 0
+remain_time_rounded = 0
 
 
 try:
@@ -18,6 +19,7 @@ try:
         os.system('cls')
         now = datetime.now()
         start = datetime.now().time()
+        remain_time_rounded = 0
 
         # Format current time
         t1 = timedelta(hours=start.hour, minutes=start.minute,
@@ -28,9 +30,8 @@ try:
         time_left_string = str(time_left)
         time_left_string = time_left_string[:-3]
 
-        # Progress Bar Conter if time is above 09.00
-        if t1 >= t3 and t1 <= t2:
-
+        # Progress bar counter only runs during work hours
+        if t3 <= t1 <= t2:
             sub_seconds = time_left.seconds / 30
             remain_time = (1080 - sub_seconds) + prog_counter
             remain_time_rounded = round(remain_time)
@@ -53,14 +54,13 @@ try:
             print(ascii_left)
             print("========================")
 
-            # setup the progress bar
-            prog_bar.set_description("Progress:".format(remain_time_rounded))
+            if t3 <= t1 <= t2:
+                prog_bar.set_description("Progress:")
 
-            # check to see if it is the first run
-            if prog_counter == 1:
-                prog_bar.update(remain_time_rounded)
-            else:
-                prog_bar.update(1)
+                if prog_counter == 1:
+                    prog_bar.update(remain_time_rounded)
+                else:
+                    prog_bar.update(1)
 
         elif t2 < t1:  # edit this line for more control
             print("Time Left ===========")
