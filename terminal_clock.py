@@ -17,7 +17,7 @@ try:
     while True:
         os.system('cls')
         now = datetime.now()
-        start = datetime.now().time()
+        start = now.time()
 
         # Format current time
         t1 = timedelta(hours=start.hour, minutes=start.minute,
