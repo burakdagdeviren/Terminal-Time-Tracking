@@ -10,12 +10,15 @@ t3 = timedelta(hours=9, minutes=00, seconds=00)
 out_of_scope = "N/A"
 ascii_none = pyfiglet.figlet_format(out_of_scope)
 prog_counter = 0
+remain_time_rounded = 0
+bar = None
 
 try:
     while True:
         os.system('cls')
         now = datetime.now()
         start = datetime.now().time()
+        remain_time_rounded = 0
 
         # Format current time
         t1 = timedelta(hours=start.hour, minutes=start.minute,
@@ -26,8 +29,8 @@ try:
         time_left_string = str(time_left)
         time_left_string = time_left_string[:-3]
 
-        # Progress Bar Conter if time is above 09.00
-        if t1 >= t3 and t1 <= t2:
+        # Progress bar counter only runs during work hours
+        if t3 <= t1 <= t2:
             sub_seconds = time_left.seconds / 30
             remain_time = (1080 - sub_seconds) + prog_counter
             remain_time_rounded = round(remain_time)
@@ -48,15 +51,14 @@ try:
         if t2 > t1:
             print("Time Left ===========")
             print(ascii_left)
-            
 
-            # check to see if it is the first run
-            print("Daily Progress =======" + "\n")
-            if prog_counter == 1:
-                bar = ChargingBar(
-                    max=1080, index=remain_time_rounded, suffix='%(percent)d%%')
-            else:
-                bar.next()
+            if t3 <= t1 <= t2:
+                print("Daily Progress =======" + "\n")
+                if prog_counter == 1:
+                    bar = ChargingBar(
+                        max=1080, index=remain_time_rounded, suffix='%(percent)d%%')
+                elif bar is not None:
+                    bar.next()
 
         elif t2 < t1:
             print("Time Left ===========")
