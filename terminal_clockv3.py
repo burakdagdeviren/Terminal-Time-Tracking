@@ -10,6 +10,7 @@ t3 = timedelta(hours=9, minutes=00, seconds=00)
 out_of_scope = "N/A"
 ascii_none = pyfiglet.figlet_format(out_of_scope)
 prog_counter = 0
+bar = None
 
 try:
     while True:
@@ -55,7 +56,7 @@ try:
             if prog_counter == 1:
                 bar = ChargingBar(
                     max=1080, index=remain_time_rounded, suffix='%(percent)d%%')
-            else:
+            elif bar is not None:
                 bar.next()
 
         elif t2 < t1:
