@@ -54,7 +54,7 @@ try:
             print("========================")
 
             # setup the progress bar
-            prog_bar.set_description("Progress:".format(remain_time_rounded))
+            prog_bar.set_description(f"Progress: {remain_time_rounded}")
 
             # check to see if it is the first run
             if prog_counter == 1:
