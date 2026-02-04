@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Station Clock</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f1ec;
+        --face: #faf7f2;
+        --ring: #1f2937;
+        --tick: #c9bfb3;
+        --hour-tick: #6b5f52;
+        --hand-hour: #1f2937;
+        --hand-minute: #374151;
+        --hand-second: #b91c1c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at 50% 40%, #ffffff 0%, var(--bg) 70%);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        color: var(--ring);
+      }
+
+      .clock-shell {
+        width: min(80vmin, 420px);
+        aspect-ratio: 1;
+        display: grid;
+        place-items: center;
+      }
+
+      .clock {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: var(--face);
+        border: 10px solid var(--ring);
+        box-shadow: 0 18px 35px rgba(31, 41, 55, 0.2);
+        display: grid;
+        place-items: center;
+      }
+
+      .clock::before {
+        content: "";
+        position: absolute;
+        inset: 6%;
+        border-radius: 50%;
+        background:
+          repeating-conic-gradient(
+            from -90deg,
+            var(--tick) 0deg 1deg,
+            transparent 1deg 6deg
+          ),
+          repeating-conic-gradient(
+            from -90deg,
+            var(--hour-tick) 0deg 2deg,
+            transparent 2deg 30deg
+          );
+        mask: radial-gradient(circle, transparent 58%, #000 59%);
+      }
+
+      .numerals {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: clamp(1rem, 2.8vmin, 1.4rem);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: #3f352c;
+      }
+
+      .numeral {
+        position: absolute;
+        transform: translate(-50%, -50%);
+      }
+
+      .numeral[data-pos="12"] { top: 12%; left: 50%; }
+      .numeral[data-pos="3"] { top: 50%; left: 88%; }
+      .numeral[data-pos="6"] { top: 88%; left: 50%; }
+      .numeral[data-pos="9"] { top: 50%; left: 12%; }
+      .numeral[data-pos="1"] { top: 22%; left: 70%; }
+      .numeral[data-pos="2"] { top: 34%; left: 82%; }
+      .numeral[data-pos="4"] { top: 66%; left: 82%; }
+      .numeral[data-pos="5"] { top: 78%; left: 70%; }
+      .numeral[data-pos="7"] { top: 78%; left: 30%; }
+      .numeral[data-pos="8"] { top: 66%; left: 18%; }
+      .numeral[data-pos="10"] { top: 34%; left: 18%; }
+      .numeral[data-pos="11"] { top: 22%; left: 30%; }
+
+      .hand {
+        position: absolute;
+        bottom: 50%;
+        left: 50%;
+        transform-origin: bottom center;
+        transform: translateX(-50%) rotate(0deg);
+        border-radius: 999px;
+      }
+
+      .hand.hour {
+        width: 8px;
+        height: 28%;
+        background: var(--hand-hour);
+        animation: rotate 43200s linear infinite;
+        box-shadow: 0 0 6px rgba(31, 41, 55, 0.2);
+      }
+
+      .hand.minute {
+        width: 6px;
+        height: 38%;
+        background: var(--hand-minute);
+        animation: rotate 3600s linear infinite;
+      }
+
+      .hand.second {
+        width: 2px;
+        height: 44%;
+        background: var(--hand-second);
+        animation: rotate 60s linear infinite;
+      }
+
+      .hand.second::after {
+        content: "";
+        position: absolute;
+        top: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--hand-second);
+      }
+
+      .cap {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #f9fafb;
+        border: 4px solid var(--hand-second);
+        box-shadow: 0 0 0 4px var(--hand-hour);
+      }
+
+      .digital {
+        position: absolute;
+        bottom: 20%;
+        font-size: clamp(0.65rem, 2vmin, 0.9rem);
+        letter-spacing: 0.2em;
+        color: #6b5f52;
+        background: rgba(249, 246, 241, 0.9);
+        padding: 0.2em 0.6em;
+        border-radius: 999px;
+        border: 1px solid rgba(107, 95, 82, 0.3);
+      }
+
+      @keyframes rotate {
+        from {
+          transform: translateX(-50%) rotate(0deg);
+        }
+        to {
+          transform: translateX(-50%) rotate(360deg);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .clock {
+          border-width: 8px;
+        }
+
+        .digital {
+          letter-spacing: 0.12em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="clock-shell">
+      <div class="clock" role="img" aria-label="Station clock face">
+        <div class="numerals">
+          <span class="numeral" data-pos="12">12</span>
+          <span class="numeral" data-pos="1">1</span>
+          <span class="numeral" data-pos="2">2</span>
+          <span class="numeral" data-pos="3">3</span>
+          <span class="numeral" data-pos="4">4</span>
+          <span class="numeral" data-pos="5">5</span>
+          <span class="numeral" data-pos="6">6</span>
+          <span class="numeral" data-pos="7">7</span>
+          <span class="numeral" data-pos="8">8</span>
+          <span class="numeral" data-pos="9">9</span>
+          <span class="numeral" data-pos="10">10</span>
+          <span class="numeral" data-pos="11">11</span>
+        </div>
+        <div class="hand hour"></div>
+        <div class="hand minute"></div>
+        <div class="hand second"></div>
+        <div class="cap"></div>
+        <div class="digital">12:00</div>
+      </div>
+    </div>
+  </body>
+</html>
